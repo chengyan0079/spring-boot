@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.Module;
+
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.boot.test.autoconfigure.filter.StandardAnnotationCustomizableTypeExcludeFilter;
@@ -31,13 +33,15 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.server.WebExceptionHandler;
+import org.springframework.web.server.WebFilter;
 
 /**
  * {@link TypeExcludeFilter} for {@link WebFluxTest @WebFluxTest}.
  *
  * @author Stephane Nicoll
+ * @since 2.2.1
  */
-class WebFluxTypeExcludeFilter extends StandardAnnotationCustomizableTypeExcludeFilter<WebFluxTest> {
+public final class WebFluxTypeExcludeFilter extends StandardAnnotationCustomizableTypeExcludeFilter<WebFluxTest> {
 
 	private static final Class<?>[] NO_CONTROLLERS = {};
 
@@ -51,6 +55,12 @@ class WebFluxTypeExcludeFilter extends StandardAnnotationCustomizableTypeExclude
 		includes.add(Converter.class);
 		includes.add(GenericConverter.class);
 		includes.add(WebExceptionHandler.class);
+		includes.add(WebFilter.class);
+		try {
+			includes.add(Module.class);
+		}
+		catch (Throwable ex) {
+		}
 		DEFAULT_INCLUDES = Collections.unmodifiableSet(includes);
 	}
 

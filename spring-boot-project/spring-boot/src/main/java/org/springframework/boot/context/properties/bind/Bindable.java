@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -162,7 +162,7 @@ public final class Bindable<T> {
 				existingValue == null || this.type.isArray() || this.boxedType.resolve().isInstance(existingValue),
 				() -> "ExistingValue must be an instance of " + this.type);
 		Supplier<T> value = (existingValue != null) ? () -> existingValue : null;
-		return new Bindable<>(this.type, this.boxedType, value, NO_ANNOTATIONS);
+		return new Bindable<>(this.type, this.boxedType, value, this.annotations);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public final class Bindable<T> {
 	 * @return an updated {@link Bindable}
 	 */
 	public Bindable<T> withSuppliedValue(Supplier<T> suppliedValue) {
-		return new Bindable<>(this.type, this.boxedType, suppliedValue, NO_ANNOTATIONS);
+		return new Bindable<>(this.type, this.boxedType, suppliedValue, this.annotations);
 	}
 
 	/**

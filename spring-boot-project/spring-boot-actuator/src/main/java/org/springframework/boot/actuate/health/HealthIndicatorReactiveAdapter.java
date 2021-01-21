@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,20 +26,19 @@ import org.springframework.util.Assert;
  * safely invoked in a reactive environment.
  *
  * @author Stephane Nicoll
- * @since 2.0.0
  */
-public class HealthIndicatorReactiveAdapter implements ReactiveHealthIndicator {
+class HealthIndicatorReactiveAdapter implements ReactiveHealthIndicator {
 
 	private final HealthIndicator delegate;
 
-	public HealthIndicatorReactiveAdapter(HealthIndicator delegate) {
+	HealthIndicatorReactiveAdapter(HealthIndicator delegate) {
 		Assert.notNull(delegate, "Delegate must not be null");
 		this.delegate = delegate;
 	}
 
 	@Override
 	public Mono<Health> health() {
-		return Mono.fromCallable(this.delegate::health).subscribeOn(Schedulers.elastic());
+		return Mono.fromCallable(this.delegate::health).subscribeOn(Schedulers.boundedElastic());
 	}
 
 }

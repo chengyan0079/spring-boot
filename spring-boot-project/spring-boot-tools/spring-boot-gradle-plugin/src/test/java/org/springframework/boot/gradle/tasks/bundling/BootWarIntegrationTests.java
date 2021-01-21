@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 the original author or authors.
+ * Copyright 2012-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,18 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
+import org.springframework.boot.gradle.junit.GradleCompatibility;
+
 /**
  * Integration tests for {@link BootJar}.
  *
  * @author Andy Wilkinson
  */
-public class BootWarIntegrationTests extends AbstractBootArchiveIntegrationTests {
+@GradleCompatibility(configurationCache = true)
+class BootWarIntegrationTests extends AbstractBootArchiveIntegrationTests {
 
-	public BootWarIntegrationTests() {
-		super("bootWar");
+	BootWarIntegrationTests() {
+		super("bootWar", "WEB-INF/lib/", "WEB-INF/classes/");
 	}
 
 }

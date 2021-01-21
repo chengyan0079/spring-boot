@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 /**
  * Configuration properties to configure Jackson.
@@ -51,14 +50,8 @@ public class JacksonProperties {
 	private String dateFormat;
 
 	/**
-	 * Joda date time format string. If not configured, "date-format" is used as a
-	 * fallback if it is configured with a format string.
-	 */
-	private String jodaDateTimeFormat;
-
-	/**
-	 * One of the constants on Jackson's PropertyNamingStrategy. Can also be a
-	 * fully-qualified class name of a PropertyNamingStrategy subclass.
+	 * One of the constants on Jackson's PropertyNamingStrategies. Can also be a
+	 * fully-qualified class name of a PropertyNamingStrategy implementation.
 	 */
 	private String propertyNamingStrategy;
 
@@ -116,18 +109,6 @@ public class JacksonProperties {
 
 	public void setDateFormat(String dateFormat) {
 		this.dateFormat = dateFormat;
-	}
-
-	@Deprecated
-	@DeprecatedConfigurationProperty(replacement = "dateFormat",
-			reason = "Auto-configuration for Jackson's Joda-Time integration is "
-					+ "deprecated in favor of its Java 8 Time integration")
-	public String getJodaDateTimeFormat() {
-		return this.jodaDateTimeFormat;
-	}
-
-	public void setJodaDateTimeFormat(String jodaDataTimeFormat) {
-		this.jodaDateTimeFormat = jodaDataTimeFormat;
 	}
 
 	public String getPropertyNamingStrategy() {

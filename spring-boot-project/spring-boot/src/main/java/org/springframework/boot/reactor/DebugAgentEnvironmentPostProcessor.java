@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 
 package org.springframework.boot.reactor;
-
-import reactor.tools.agent.ReactorDebugAgent;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -46,7 +44,13 @@ public class DebugAgentEnvironmentPostProcessor implements EnvironmentPostProces
 		if (ClassUtils.isPresent(REACTOR_DEBUGAGENT_CLASS, null)) {
 			Boolean agentEnabled = environment.getProperty(DEBUGAGENT_ENABLED_CONFIG_KEY, Boolean.class);
 			if (agentEnabled != Boolean.FALSE) {
-				ReactorDebugAgent.init();
+				try {
+					Class<?> debugAgent = Class.forName(REACTOR_DEBUGAGENT_CLASS);
+					debugAgent.getMethod("init").invoke(null);
+				}
+				catch (Exception ex) {
+					throw new RuntimeException("Failed to init Reactor's debug agent", ex);
+				}
 			}
 		}
 	}
